@@ -1,0 +1,16 @@
+server:
+  port: 9005
+spring:
+  application:
+    name: tibao-topicsquare
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: tibao-mortal-dev
+        file-extension: yaml
+      discovery:
+        namespace: tibao-mortal-dev
+

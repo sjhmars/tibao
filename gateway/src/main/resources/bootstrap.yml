@@ -5,7 +5,11 @@ spring:
     name: tibao-gateway
   cloud:
     nacos:
-      discovery:
+      username: nacos
+      password: nacos
+      config:
         server-addr: 127.0.0.1:8848
-        username: nacos
-        password: nacos
+        namespace: tibao-mortal-dev
+        file-extension: yaml
+      discovery:
+        namespace: tibao-mortal-dev
