@@ -6,6 +6,7 @@ import com.mortal.auth.mapper.UserMapper;
 import com.mortal.auth.pojo.UserPojo;
 import com.mortal.auth.service.RegistService;
 import com.mortal.auth.vo.UserRegistVo;
+import com.mortal.common.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class RegistServiceImp extends ServiceImpl<UserMapper, UserPojo> implemen
         userPojo.setSex(userRegistVo.getSex());
         userPojo.setPhoneNumber(userRegistVo.getPhoneNumber());
         userPojo.setUserType(userRegistVo.getUserType());
-        userPojo.setJobNumber(userRegistVo.getJodNumber());
+        userPojo.setJobNumber(userRegistVo.getJobNumber());
         try {
             if (baseMapper.insert(userPojo)>0){
                 return userPojo.getId();

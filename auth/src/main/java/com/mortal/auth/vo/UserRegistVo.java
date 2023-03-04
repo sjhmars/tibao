@@ -17,11 +17,11 @@ public class UserRegistVo {
     @Length(min = 2,max = 12,message = "密码长度在6-12之间")
     private String userPassword;
 
-    @NotNull(message = "必须选择学生或老师")
-    private Integer userType;
+    @NotEmpty(message = "必须选择学生或老师")
+    private String  userType;
 
     @NotEmpty(message= "学号必须填写")
-    private String jodNumber;
+    private String jobNumber;
 
     @NotNull(message = "必须选择性别")
     @Min(value = 0,message = "只能选0或1")

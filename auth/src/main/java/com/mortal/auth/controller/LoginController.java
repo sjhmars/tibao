@@ -13,6 +13,7 @@ import com.mortal.common.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,8 +50,20 @@ public class LoginController {
 //        return R.ok(map);
 //    }
 
+
+    /**
+     * 结合security和JWT+redis实现单点登录,原本想结合gateway网关，但是怕消耗网关性能
+     * **/
     @PostMapping("/login")
-    public R Login(@Valid @RequestBody UserLoginVo userLoginVo, BindingResult result){
+    public R login(@Valid @RequestBody UserLoginVo userLoginVo, BindingResult result){
+        return loginService.login(userLoginVo);
+    }
+
+    /**
+     * 旧方式登录
+     * **/
+    @PostMapping("/login2")
+    public R Login2(@Valid @RequestBody UserLoginVo userLoginVo, BindingResult result){
         if (result.hasErrors()){
             Map<String,String> errors = result.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField,FieldError::getDefaultMessage));
             return R.failed(errors);
@@ -64,6 +77,7 @@ public class LoginController {
         }
         return R.failed("用户不存在");
     }
+
 
     @PostMapping("/regist")
     public R regist(@Valid @RequestBody UserRegistVo userRegistVo, BindingResult result){
@@ -80,5 +94,20 @@ public class LoginController {
         return R.failed("注册失败");
     }
 
+    //退出登录
+    @PostMapping("/loginOut")
+    public R loginOut(){
+        return loginService.loginOut();
+    }
+
+    //注销
+    @PostMapping("/logOff")
+    public R logOff(@Valid @RequestBody UserLoginVo userLoginVo,BindingResult result){
+        if (result.hasErrors()){
+            Map<String,String> errors = result.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, DefaultMessageSourceResolvable::getDefaultMessage));
+            return R.failed(errors);
+        }
+        return loginService.logOff(userLoginVo);
+    }
 
 }

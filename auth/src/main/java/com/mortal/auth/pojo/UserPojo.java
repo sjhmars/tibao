@@ -21,7 +21,7 @@ public class UserPojo {
     private String userPassword;
 
     @TableField(value = "user_type")
-    private Integer userType;
+    private String userType;
 
     @TableField(value = "is_delete")
     private Integer isDelete;
