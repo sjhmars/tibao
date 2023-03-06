@@ -1,6 +1,6 @@
-package com.mortal.auth.security;
+package com.mortal.topicsquare.security;
 
-import com.mortal.auth.filter.JwtAuthenticationTokenFilter;
+import com.mortal.topicsquare.filter.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

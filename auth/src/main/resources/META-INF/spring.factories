@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
+  com.mortal.auth.handler.AccessDeniedHandlerImpl,\
+  com.mortal.auth.handler.AuthenticationEntryPointImpl

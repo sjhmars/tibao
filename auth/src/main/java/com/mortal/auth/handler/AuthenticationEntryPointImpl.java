@@ -1,4 +1,4 @@
-package com.mortal.common.handler;
+package com.mortal.auth.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.mortal.common.utils.R;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.stream.Stream;
 
 @Component
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {

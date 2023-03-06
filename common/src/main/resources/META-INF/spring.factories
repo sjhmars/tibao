@@ -1,5 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
   com.mortal.common.config.RedisConfig,\
-  com.mortal.common.utils.RedisCache,\
-  com.mortal.common.handler.AccessDeniedHandlerImpl,\
-  com.mortal.common.handler.AuthenticationEntryPointImpl
+  com.mortal.common.utils.RedisCache

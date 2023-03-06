@@ -1,4 +1,4 @@
-package com.mortal.common.handler;
+package com.mortal.auth.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.mortal.common.utils.R;
