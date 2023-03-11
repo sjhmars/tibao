@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/square")
-public class UserSpace {
+public class UserSpaceController {
 
     @Autowired
     private UserService userService;
@@ -26,26 +26,17 @@ public class UserSpace {
     public R getUserMessage(@RequestBody UserVo userVo) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
-        String JobNumber = loginUser.getUserPojo().getJobNumber();
-        UserPojo userMessage;
-            //获取自己
-        if (userVo.getJobNumber().equals(JobNumber)){
-            userMessage = userService.getOne(new LambdaQueryWrapper<UserPojo>().eq(UserPojo::getJobNumber,userVo.getJobNumber()));
-            userMessage.setUserPassword(null);
-        } else {
-            userMessage = userService.getOne(new LambdaQueryWrapper<UserPojo>().eq(UserPojo::getJobNumber,userVo.getJobNumber()));
-            //获取他人
-            userMessage.setIsDelete(null);
-            userMessage.setUserPassword(null);
-            userMessage.setStatus(null);
-        }
+        String jobNumber = loginUser.getUserPojo().getJobNumber();
+
+        UserPojo userMessage = userService.getUserMessage(jobNumber,userVo);
         return R.ok(userMessage);
     }
 
     @PostMapping("/changeUserMessage")
-    @Transactional
     public R changeUserMessage(@RequestBody UserPojo userMessage) {
         userService.update(userMessage,new LambdaQueryWrapper<UserPojo>().eq(UserPojo::getJobNumber,userMessage.getJobNumber()));
         return R.ok();
     }
+
+    //public R getUserArticle(@RequestBody UserPojo)
 }

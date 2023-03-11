@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
   com.mortal.common.config.RedisConfig,\
-  com.mortal.common.utils.RedisCache
+  com.mortal.common.utils.RedisCache,\
+  com.mortal.common.config.MybatisPlusConfig
