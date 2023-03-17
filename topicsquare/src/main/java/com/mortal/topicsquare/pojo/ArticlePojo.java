@@ -26,6 +26,6 @@ public class ArticlePojo {
     @TableField(value = "create_time")
     private Date createTime;
 
-    @TableField(value = "option")
-    private String option;
+    @TableField(value = "options")
+    private String options;
 }

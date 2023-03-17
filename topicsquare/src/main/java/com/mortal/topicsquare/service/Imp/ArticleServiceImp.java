@@ -1,11 +1,16 @@
 package com.mortal.topicsquare.service.Imp;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mortal.common.utils.R;
 import com.mortal.topicsquare.mapper.ArticleMapper;
 import com.mortal.topicsquare.pojo.*;
 import com.mortal.topicsquare.service.*;
+import com.mortal.topicsquare.vo.ArticleUserVo;
+import com.mortal.topicsquare.vo.ArticleVo;
+import com.mortal.topicsquare.vo.LikeArticleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +31,9 @@ public class ArticleServiceImp extends ServiceImpl<ArticleMapper, ArticlePojo> i
 
     @Autowired
     private LikeService likeService;
+
+    @Autowired
+    private ArticleMapper articleMapper;
 
     @Override
     public R deleteArticle(ArticlePojo articlePojo,Integer userId) {
@@ -86,11 +94,34 @@ public class ArticleServiceImp extends ServiceImpl<ArticleMapper, ArticlePojo> i
         if (likePojo1 == null) {
             likeService.save(likePojo);
         } else {
-            ArticlePojo ArticleById = this.getById(articlePojo.getArticleId());
             likeService.remove(new LambdaQueryWrapper<LikePojo>().eq(LikePojo::getArticleId,articlePojo.getArticleId()));
         }
 
         return R.ok();
+    }
+
+    @Override
+    public IPage<ArticleUserVo> getArticle(ArticleVo articleVo) {
+        Page<ArticleUserVo> page1 = new Page<>(articleVo.getPageNumber(),10);
+        IPage<ArticleUserVo> page = articleMapper.selectAllArticle(page1,null,null,null);
+        return page;
+    }
+
+    @Override
+    public ArticleUserVo getArticleById(Integer articleId) {
+        return articleMapper.selectByArticleId(articleId);
+    }
+
+    @Override
+    public IPage<ArticleUserVo> getArticleByCollegeId(ArticleVo articleVo) {
+        Page<ArticleUserVo> page = new Page<>(articleVo.getPageNumber(),10);
+        return articleMapper.selectAllArticle(page,null,articleVo.getCollegeId(),null);
+    }
+
+    @Override
+    public IPage<LikeArticleVo> getAllLikeArticle(Integer pageNumber,Integer userId) {
+        Page<LikeArticleVo> page = new Page<>(pageNumber,10);
+        return articleMapper.selectByArticleIdLikeArticleVo(page,userId);
     }
 }
 

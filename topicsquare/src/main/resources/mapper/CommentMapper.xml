@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mortal.topicsquare.mapper.CommentMapper">
+    <select id="selectComment" resultType="com.mortal.topicsquare.vo.CommentUserVo">
+select `comment`.id,`comment`,user_id,create_time,article_message_id,user_name,user_type
+from `comment` LEFT JOIN `user`on `comment`.user_id = `user`.id
+WHERE article_message_id = #{articleId}
+order by `comment`.create_time desc
+    </select>
+</mapper>

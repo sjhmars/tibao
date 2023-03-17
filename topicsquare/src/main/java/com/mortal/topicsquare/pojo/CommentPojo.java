@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @TableName("comment")
 public class CommentPojo {
@@ -24,4 +26,8 @@ public class CommentPojo {
 
     @TableField(value = "article_message_id" )
     private Integer articleMessageId;
+
+
+    @TableField(value = "create_time")
+    private Date createTime;
 }

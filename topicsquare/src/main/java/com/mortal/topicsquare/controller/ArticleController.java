@@ -9,6 +9,8 @@ import com.mortal.topicsquare.service.ArticleService;
 import com.mortal.topicsquare.service.CommentService;
 import com.mortal.topicsquare.service.NoticeService;
 import com.mortal.topicsquare.service.ReplayService;
+import com.mortal.topicsquare.vo.ArticleUserVo;
+import com.mortal.topicsquare.vo.ArticleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -101,7 +103,7 @@ public class ArticleController {
     }
 
     @PostMapping("/likeArticle")
-    public R LikeArticle(@PathVariable ArticlePojo articlePojo, HttpServletRequest request) {
+    public R LikeArticle(@RequestBody ArticlePojo articlePojo) {
         //Integer userId = CheckAllow.checkAllow(userMessageOperationService, request);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
@@ -146,5 +148,28 @@ public class ArticleController {
 //
 //        return ResponseData.success();
         return articleService.likeArticle(articlePojo,userId);
+    }
+
+    @PostMapping("/getArticle")
+    public R getNewArticle(@RequestBody ArticleVo articleVo) {
+        return R.ok(articleService.getArticle(articleVo));
+    }
+
+    @PostMapping("/getArticleById")
+    public R getNewArticleById(@RequestBody Integer articleId) {
+        return R.ok(articleService.getArticleById(articleId));
+    }
+
+    @PostMapping("/getArticleByCollegeId")
+    public R getNewArticleByThemeId(@RequestBody ArticleVo articleVo) {
+        return R.ok(articleService.getArticleByCollegeId(articleVo));
+    }
+
+    @GetMapping("/getAllLikeArticle/{pageNumber}")
+    public R getAllLikeArticle(@PathVariable Integer pageNumber) {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
+        Integer userId = loginUser.getUserPojo().getId();
+        return R.ok(articleService.getAllLikeArticle(pageNumber,userId));
     }
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mortal.topicsquare.mapper.ReplayMapper">
+    <select id="searchAllByCommentId" resultType="com.mortal.topicsquare.vo.ReplayContentVo">
+        SELECT replay_id,comment_id,user_id,replay_content,create_time,replay_user_id,user_name,user_type
+        FROM replay_message LEFT JOIN `user` ON replay_message.user_id = `user`.id where comment_id = #{commentId}
+    </select>
+</mapper>

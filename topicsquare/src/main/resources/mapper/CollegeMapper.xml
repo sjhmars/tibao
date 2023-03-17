@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mortal.topicsquare.mapper.CollegeMapper">
+    <select id="searchAll" resultType="com.mortal.topicsquare.pojo.CollegePojo">
+        select * from college
+    </select>
+</mapper>
