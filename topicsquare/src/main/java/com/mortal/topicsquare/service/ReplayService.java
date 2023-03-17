@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ReplayService extends IService<ReplayPojo> {
      List<ReplayContentVo> getReplayContent(Integer CommentId);
+     ReplayContentVo getReplayContentById(Integer replayId);
 }

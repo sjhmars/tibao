@@ -11,4 +11,5 @@ import java.util.List;
 @Mapper
 public interface ReplayMapper extends BaseMapper<ReplayPojo> {
     List<ReplayContentVo> searchAllByCommentId(@Param("commentId") Integer commentId);
+    ReplayContentVo searchAllByReplayId(@Param("replayId") Integer replayId);
 }

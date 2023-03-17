@@ -13,6 +13,7 @@ import com.mortal.topicsquare.vo.ArticleVo;
 import com.mortal.topicsquare.vo.LikeArticleVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -85,6 +86,9 @@ public class ArticleServiceImp extends ServiceImpl<ArticleMapper, ArticlePojo> i
     }
 
     @Override
+    /**
+     * 收藏文章
+     */
     public R likeArticle(ArticlePojo articlePojo, Integer userId) {
         LikePojo likePojo = new LikePojo();
         likePojo.setCreateTime(new Date());

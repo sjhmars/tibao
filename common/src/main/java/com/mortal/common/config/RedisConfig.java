@@ -10,7 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
-@AutoConfigureBefore(RedisAutoConfiguration.class)
+@AutoConfigureBefore(RedisAutoConfiguration.class)//修复会自动配置原有的RedisTemplate
 public class RedisConfig {
 
     @Bean

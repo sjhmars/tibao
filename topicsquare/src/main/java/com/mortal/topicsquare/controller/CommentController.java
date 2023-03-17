@@ -26,6 +26,7 @@ public class CommentController {
 
 
     @RequestMapping("/saveComment")
+    @Transactional
     public R saveComment(@RequestBody CommentPojo commentMessage) {
 //        CommentPojo commentPojo = new CommentPojo();
 //先添加，在查询，然后在保存通知
@@ -55,7 +56,7 @@ public class CommentController {
     }
 
     @Transactional
-    @RequestMapping("/saveReplay")
+    @PostMapping("/saveReplay")
     public R saveReplay(@RequestBody ReplayPojo replayMessage) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
@@ -81,7 +82,7 @@ public class CommentController {
         return commentService.saveReplayAll(replayMessage,Id);
     }
 
-    @GetMapping("/getCommentById")
+    @PostMapping("/getCommentById")
     public R getCommentById(@RequestBody CommentVo commentVo) {
 //        for ( CommentUserVo commentUserVo : list) {
 //            commentUserVo.setReplayPojoList();
@@ -93,5 +94,17 @@ public class CommentController {
 //
 //        PageInfo<CommentMessage> of = PageInfo.of(list);
         return R.ok(commentService.getCommentByArticleId(commentVo));
+    }
+
+    @PostMapping("/deleteComment")
+    @Transactional
+    public R deleteComment(@RequestBody Integer commentId) {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
+        Integer userId = loginUser.getUserPojo().getId();
+        if (commentService.removeComment(commentId,userId) == 0){
+            return R.ok("删除回复成功");
+        }
+        return R.failed("删除失败");
     }
 }

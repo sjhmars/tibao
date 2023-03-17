@@ -36,6 +36,7 @@ public class UserSpaceController {
     }
 
     @PostMapping("/changeUserMessage")
+    @Transactional
     public R changeUserMessage(@RequestBody UserPojo userMessage) {
         userService.update(userMessage,new LambdaQueryWrapper<UserPojo>().eq(UserPojo::getJobNumber,userMessage.getJobNumber()));
         return R.ok();

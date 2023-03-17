@@ -12,4 +12,6 @@ public interface CommentService extends IService<CommentPojo> {
     IPage<CommentUserVo> getCommentByArticleId(CommentVo commentVo);
     R saveCommentAll(CommentPojo commentMessage,Integer userId);
     R saveReplayAll(ReplayPojo replayPojo,Integer userId);
+    CommentUserVo getCommentById(Integer commentId);
+    Integer removeComment(Integer commentId,Integer userId);
 }

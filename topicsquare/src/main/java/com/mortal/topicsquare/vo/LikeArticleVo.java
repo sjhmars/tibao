@@ -15,4 +15,5 @@ public class LikeArticleVo {
     private Date articleCreate;
     private String userName;
     private String userType;
+    private String userImg;
 }

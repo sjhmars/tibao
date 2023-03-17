@@ -15,5 +15,6 @@ public class CommentUserVo {
     private Integer articleMessageId;
     private String userName;
     private String userType;
+    private String userImg;
     private List<ReplayContentVo> ReplayContentVoList;
 }

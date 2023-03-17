@@ -10,4 +10,5 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface CommentMapper extends BaseMapper<CommentPojo> {
     IPage<CommentUserVo> selectComment(IPage<CommentUserVo> page, @Param("articleId") Integer articleId);
+    CommentUserVo selectCommentUserVo(@Param("commentId") Integer commentId);
 }

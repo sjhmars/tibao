@@ -1,5 +1,6 @@
 package com.mortal.topicsquare.service.Imp;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -100,5 +101,30 @@ public class CommentServiceImp extends ServiceImpl<CommentMapper, CommentPojo> i
         }
         replayService.save(replayPojo);
         return R.ok("发布回复成功");
+    }
+
+    @Override
+    public CommentUserVo getCommentById(Integer commentId) {
+        return commentMapper.selectCommentUserVo(commentId);
+    }
+
+    @Override
+    public Integer removeComment(Integer commentId, Integer userId) {
+        CommentPojo commentMessage = new CommentPojo();
+        commentMessage.setId(commentId);
+        commentMessage.setUserId(userId);
+
+        commentMapper.delete(new LambdaQueryWrapper<CommentPojo>().eq(CommentPojo::getId,commentId));
+
+        noticeService.remove(new LambdaQueryWrapper<NoticePojo>().eq(NoticePojo::getCommentId,commentId));
+
+        List<ReplayPojo> list = replayService.list(new LambdaQueryWrapper<ReplayPojo>().eq(ReplayPojo::getCommentId,commentId));
+
+        replayService.remove(new LambdaQueryWrapper<ReplayPojo>().eq(ReplayPojo::getCommentId,commentId));
+
+        for (ReplayPojo replayPojo : list) {
+            noticeService.remove(new LambdaQueryWrapper<NoticePojo>().eq(NoticePojo::getReplayId,replayPojo.getReplayId()));
+        }
+        return 0;
     }
 }

@@ -29,6 +29,7 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @Transactional
     @PostMapping("/saveArticle")
     public R saveArticle(@RequestBody ArticlePojo articleMessage) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
@@ -40,6 +41,7 @@ public class ArticleController {
         return R.ok();
     }
 
+    @Transactional
     @PostMapping("/deleteArticle")
     public R deleteArticle(@RequestBody ArticlePojo articlePojo) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
@@ -67,6 +69,7 @@ public class ArticleController {
         return articleService.deleteArticle(articlePojo,userId);
     }
 
+    @Transactional
     @PostMapping("/deleteReplay")
     public R deleteReplay(@PathVariable ReplayPojo replayPojo) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
@@ -85,7 +88,13 @@ public class ArticleController {
         return articleService.deleteReplay(replayPojo,userId);
     }
 
+    /**
+     *检测文章是否被收藏
+     * @param articlePojo
+     * @return
+     */
     @PostMapping("/getLikeArticle")
+    @Transactional
     public R getLikeArticle(@RequestBody ArticlePojo articlePojo) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
@@ -102,6 +111,12 @@ public class ArticleController {
         return articleService.getLikeArticle(articlePojo,userId);
     }
 
+    /**
+     * 收藏文章
+     * @param articlePojo
+     * @return
+     */
+    @Transactional
     @PostMapping("/likeArticle")
     public R LikeArticle(@RequestBody ArticlePojo articlePojo) {
         //Integer userId = CheckAllow.checkAllow(userMessageOperationService, request);

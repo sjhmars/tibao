@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.mortal.topicsquare.vo.CommentUserVo;
+import com.mortal.topicsquare.vo.LikeUserVo;
+import com.mortal.topicsquare.vo.ReplayContentVo;
 import lombok.Data;
 
 import java.util.Date;
@@ -41,5 +44,11 @@ public class NoticePojo {
 
     @TableField(value = "`send_user_id`")
     private Integer sendUserId;
+
+    private LikeUserVo likeUserVo;
+
+    private CommentUserVo commentUserVo;
+
+    private ReplayContentVo replayContentVo;
 }
 

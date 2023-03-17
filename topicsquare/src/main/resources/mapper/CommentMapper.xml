@@ -2,9 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mortal.topicsquare.mapper.CommentMapper">
     <select id="selectComment" resultType="com.mortal.topicsquare.vo.CommentUserVo">
-select `comment`.id,`comment`,user_id,create_time,article_message_id,user_name,user_type
+select `comment`.id,`comment`,user_id,create_time,article_message_id,user_name,user_type,user_img
 from `comment` LEFT JOIN `user`on `comment`.user_id = `user`.id
 WHERE article_message_id = #{articleId}
 order by `comment`.create_time desc
+    </select>
+    <select id="selectCommentUserVo" resultType="com.mortal.topicsquare.vo.CommentUserVo">
+        select `comment`.id,`comment`,user_id,create_time,article_message_id,user_name,user_type,user_img
+        from `comment` LEFT JOIN `user`on `comment`.user_id = `user`.id
+        WHERE `comment`.id = #{commentId}
+        order by `comment`.create_time desc
     </select>
 </mapper>

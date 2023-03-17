@@ -19,4 +19,9 @@ public class ReplayServiceImp extends ServiceImpl<ReplayMapper, ReplayPojo> impl
     public List<ReplayContentVo> getReplayContent(Integer CommentId) {
         return replayMapper.searchAllByCommentId(CommentId);
     }
+
+    @Override
+    public ReplayContentVo getReplayContentById(Integer replayId) {
+        return replayMapper.searchAllByReplayId(replayId);
+    }
 }

@@ -11,6 +11,7 @@ public class ArticleUserVo {
     private String options;
     private String userName;
     private String userType;
+    private String userImg;
     private String collegeName;
     private Date createTime;
 }
