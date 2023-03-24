@@ -11,5 +11,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class GatewayApplication {
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class,args);
+        System.out.println("----------------------  网关服务 启动成功 -------------------------");
     }
 }

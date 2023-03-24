@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mortal.auth.mapper.UserMapper">
+    <select id="searchAllById" resultType="com.mortal.auth.vo.UserVo">
+        SELECT id,user_name,user_type,sex,job_number,institute_id,phone_number,answer_number,user_img,user_intro,create_time FROM `user` WHERE id = #{userId}
+    </select>
+</mapper>

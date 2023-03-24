@@ -1,6 +1,5 @@
-package com.mortal.auth.filter;
+package com.mortal.searchquestions.filter;
 
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.mortal.auth.pojo.LoginUser;
 import com.mortal.common.utils.JwtUtil;
@@ -43,11 +42,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             throw new RuntimeException("token非法");
         }
         String redisKey = "login:"+Id;
-        LoginUser loginUser = redisCache.getCacheObject(redisKey);//从redis中获取loginUser
+        LoginUser loginUser = redisCache.getCacheObject(redisKey);
         if (Objects.isNull(loginUser)){
             throw new RuntimeException("用户未登录");
         }
-        //loginUser放入SecurityContextHolder中
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginUser,null, loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         //放行

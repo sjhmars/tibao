@@ -46,9 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)//允许会话
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/login","/api/regist","/auth/api/login").anonymous()//配置放行端口
+                .antMatchers("/api/login","/api/regist","/auth/api/login","/auth/api/regist","/api/findPassword").anonymous()//配置放行端口
                 .anyRequest().authenticated();//其他全部拦截
-        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);//配置拦截器
 
         http.exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)

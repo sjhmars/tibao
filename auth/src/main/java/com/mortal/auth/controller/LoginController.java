@@ -2,6 +2,8 @@ package com.mortal.auth.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.mortal.auth.feign.SaveHeadImg;
 import com.mortal.auth.mapper.UserMapper;
 import com.mortal.auth.pojo.UserPojo;
 import com.mortal.auth.service.Imp.LoginServiceImp;
@@ -14,12 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -87,9 +89,11 @@ public class LoginController {
         }
         int i = registService.regis(userRegistVo);
         if (i == 2){
-            return R.failed("工号重复");
-        }else if (i > 0){
-            return  R.ok("注册成功");
+            return R.failed("工号或学号重复");
+        }else if (i == 3){
+            return  R.failed("该手机以注册");
+        }else if (i>0){
+            return R.ok("注册成功");
         }
         return R.failed("注册失败");
     }
@@ -108,6 +112,30 @@ public class LoginController {
             return R.failed(errors);
         }
         return loginService.logOff(userLoginVo);
+    }
+
+    @PostMapping("/changeUser")
+    @Transactional
+    public R changeUserMessage(@RequestBody UserRegistVo userMessage) {
+            loginService.changeUser(userMessage);
+        return R.ok();
+    }
+
+    @PostMapping("/getUserAdmin")
+    public R getUserAdmin(){
+        return loginService.getUserAdmin();
+    }
+
+    @PostMapping("/findPassword")
+    @Transactional
+    public R findPassword(@RequestBody UserRegistVo userMessage) {
+        loginService.findPassword(userMessage);
+        return R.ok("修改成功");
+    }
+
+    @PostMapping("/uploadHeadImage")
+    public R uploadHeadImage(@RequestParam("file") MultipartFile file){
+        return R.ok(loginService.uploadImage(file));
     }
 
 }

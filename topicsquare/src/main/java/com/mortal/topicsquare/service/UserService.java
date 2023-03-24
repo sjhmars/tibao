@@ -9,6 +9,6 @@ import com.mortal.topicsquare.vo.ArticleVo;
 import com.mortal.topicsquare.vo.UserVo;
 
 public interface UserService extends IService<UserPojo> {
-    UserPojo getUserMessage(String jobNumber, UserVo userVo);
+    UserPojo getUserMessage(Integer jobNumber, UserVo userVo);
     IPage<ArticleUserVo> getNewArticle(ArticleVo articleVo);
 }

@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Slf4j
 @Service
 public class RegistServiceImp extends ServiceImpl<UserMapper, UserPojo> implements RegistService {
@@ -27,6 +29,7 @@ public class RegistServiceImp extends ServiceImpl<UserMapper, UserPojo> implemen
         userPojo.setPhoneNumber(userRegistVo.getPhoneNumber());
         userPojo.setUserType(userRegistVo.getUserType());
         userPojo.setJobNumber(userRegistVo.getJobNumber());
+        userPojo.setCreateTime(new Date());
         try {
             if (baseMapper.insert(userPojo)>0){
                 return userPojo.getId();
@@ -36,6 +39,8 @@ public class RegistServiceImp extends ServiceImpl<UserMapper, UserPojo> implemen
             if (StrUtil.isNotBlank(errMsg)&&errMsg.contains("user.one")){
                 return 2;
             }
+            if (StrUtil.isNotBlank(errMsg)&&errMsg.contains("user.phoneOne"))
+                return 3;
         }
         return 0;
     }

@@ -9,7 +9,7 @@ import javax.validation.constraints.*;
 @Data
 public class UserRegistVo {
 
-    @NotEmpty(message = "必须输入用户名")
+    @NotEmpty(message = "必须输入用户昵称")
     @Length(min = 2,max = 10,message = "用户名长度在2-10之间")
     private String  userName;
 

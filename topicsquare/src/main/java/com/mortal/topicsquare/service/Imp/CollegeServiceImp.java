@@ -7,6 +7,8 @@ import com.mortal.topicsquare.service.CollegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CollegeServiceImp extends ServiceImpl<CollegeMapper, CollegePojo> implements CollegeService {
 
@@ -14,7 +16,7 @@ public class CollegeServiceImp extends ServiceImpl<CollegeMapper, CollegePojo> i
     private CollegeMapper collegeMapper;
 
     @Override
-    public CollegePojo getAllCollege() {
+    public List<CollegePojo> getAllCollege() {
         return collegeMapper.searchAll();
     }
 }

@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 @TableName("user")
@@ -31,8 +34,8 @@ public class UserPojo {
     @TableField("job_number")
     private String jobNumber;
 
-    @TableField("college_id")
-    private Integer collegeId;
+    @TableField("institute_id")
+    private Integer instituteId;
 
     private Integer status;
 
@@ -44,4 +47,14 @@ public class UserPojo {
 
     @TableField("conceal")
     private String conceal;
+
+    @TableField("user_img")
+    private String userImg;
+
+    @TableField("user_intro")
+    private String userIntro;
+
+    @TableField("create_time")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date createTime;
 }

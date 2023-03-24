@@ -22,14 +22,14 @@ public class UserServiceImp extends ServiceImpl<UserMapper, UserPojo> implements
     private ArticleMapper articleMapper;
 
     @Override
-    public UserPojo getUserMessage(String jobNumber, UserVo userVo) {
+    public UserPojo getUserMessage(Integer userId, UserVo userVo) {
         UserPojo userMessage;
         //获取自己
-        if (userVo.getJobNumber().equals(jobNumber)){
-            userMessage = this.getOne(new LambdaQueryWrapper<UserPojo>().eq(UserPojo::getJobNumber,userVo.getJobNumber()));
+        if (userVo.getUserId().equals(userId)){
+            userMessage = this.getOne(new LambdaQueryWrapper<UserPojo>().eq(UserPojo::getId,userVo.getUserId()));
             userMessage.setUserPassword(null);
         } else {
-            userMessage = this.getOne(new LambdaQueryWrapper<UserPojo>().eq(UserPojo::getJobNumber,userVo.getJobNumber()));
+            userMessage = this.getOne(new LambdaQueryWrapper<UserPojo>().eq(UserPojo::getId,userVo.getUserId()));
             //获取他人
             userMessage.setIsDelete(null);
             userMessage.setUserPassword(null);
