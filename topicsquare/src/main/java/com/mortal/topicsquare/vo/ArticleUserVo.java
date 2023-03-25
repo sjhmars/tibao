@@ -9,6 +9,7 @@ import java.util.Date;
 public class ArticleUserVo {
     private Integer articleId;
     private String  articleContent;
+    private String articleImg;
     private String options;
     private Integer userId;
     private String userName;

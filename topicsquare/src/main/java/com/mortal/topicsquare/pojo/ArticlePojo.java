@@ -30,4 +30,10 @@ public class ArticlePojo {
 
     @TableField(value = "options")
     private String options;
+
+    @TableField(value = "article_type")
+    private Integer articleType;
+
+    @TableField(value = "article_img")
+    private String articleImg;
 }
