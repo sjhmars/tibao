@@ -18,4 +18,5 @@ public class ReplayContentVo {
     private String userName;
     private String userType;
     private String userImg;
+    private Integer sex;
 }

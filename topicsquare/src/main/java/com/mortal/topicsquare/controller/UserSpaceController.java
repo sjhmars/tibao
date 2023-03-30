@@ -1,5 +1,6 @@
 package com.mortal.topicsquare.controller;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.mortal.auth.pojo.LoginUser;
 import com.mortal.common.utils.R;
 import com.mortal.topicsquare.pojo.UserPojo;
@@ -41,6 +42,17 @@ public class UserSpaceController {
         LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
         Integer userId = loginUser.getUserPojo().getId();
         return R.ok(userId);
+    }
+
+    @PostMapping("/updateIntro")
+    public R updateIntro(@RequestBody UserPojo userPojo){
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
+        Integer userId = loginUser.getUserPojo().getId();
+        if (userService.update(new LambdaUpdateWrapper<UserPojo>().eq(UserPojo::getId,userId).set(UserPojo::getUserIntro,userPojo.getUserIntro()))){
+            return R.ok("修改成功");
+        }
+        return R.failed("修改失败");
     }
 
     //public R getUserArticle(@RequestBody UserPojo)

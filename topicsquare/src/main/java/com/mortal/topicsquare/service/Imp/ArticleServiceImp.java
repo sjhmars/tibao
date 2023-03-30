@@ -1,10 +1,14 @@
 package com.mortal.topicsquare.service.Imp;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mortal.auth.pojo.LoginUser;
 import com.mortal.common.utils.R;
+import com.mortal.topicsquare.feign.SaveTitleService;
 import com.mortal.topicsquare.mapper.ArticleMapper;
 import com.mortal.topicsquare.pojo.*;
 import com.mortal.topicsquare.service.*;
@@ -12,9 +16,14 @@ import com.mortal.topicsquare.vo.ArticleUserVo;
 import com.mortal.topicsquare.vo.ArticleVo;
 import com.mortal.topicsquare.vo.LikeArticleVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +44,9 @@ public class ArticleServiceImp extends ServiceImpl<ArticleMapper, ArticlePojo> i
 
     @Autowired
     private ArticleMapper articleMapper;
+
+    @Autowired
+    private SaveTitleService saveTitleService;
 
     @Override
     public R deleteArticle(ArticlePojo articlePojo,Integer userId) {
@@ -113,7 +125,12 @@ public class ArticleServiceImp extends ServiceImpl<ArticleMapper, ArticlePojo> i
 
     @Override
     public ArticleUserVo getArticleById(Integer articleId) {
-        return articleMapper.selectByArticleId(articleId);
+        ArticleUserVo articleUserVo = articleMapper.selectByArticleId(articleId);
+        String options = null;
+        if (StrUtil.isNotBlank(articleUserVo.getOptions()))
+             options = articleUserVo.getOptions().replace(","," ");
+        articleUserVo.setOptions(options);
+        return articleUserVo;
     }
 
     @Override
@@ -126,6 +143,40 @@ public class ArticleServiceImp extends ServiceImpl<ArticleMapper, ArticlePojo> i
     public IPage<LikeArticleVo> getAllLikeArticle(Integer pageNumber,Integer userId) {
         Page<LikeArticleVo> page = new Page<>(pageNumber,10);
         return articleMapper.selectByArticleIdLikeArticleVo(page,userId);
+    }
+
+    @Override
+    public R saveToqb(ArticlePojo articlePojo) {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
+        Integer userId = loginUser.getUserPojo().getId();
+        articlePojo.setUserId(userId);
+        articlePojo.setCreateTime(new Date());
+        this.save(articlePojo);
+        QuestionBankPojo questionBankPojo = new QuestionBankPojo();
+        if (articlePojo.getArticleType() == 0){
+            questionBankPojo.setAnswer(articlePojo.getOptions());
+            questionBankPojo.setCollegeId(articlePojo.getCollegeId());
+            if (StrUtil.isNotBlank(articlePojo.getArticleImg()))
+                questionBankPojo.setQbImg(articlePojo.getArticleImg());
+            questionBankPojo.setQbType(articlePojo.getArticleType());
+            questionBankPojo.setQuestionTitle(articlePojo.getArticleContent());
+        }
+        if (articlePojo.getArticleType() == 1){
+            if (StrUtil.isNotBlank(articlePojo.getArticleContent())){
+                List<String> answerAndChoice = Arrays.asList(articlePojo.getArticleContent().split("#"));
+                questionBankPojo.setQuestionTitle(answerAndChoice.get(1));
+                questionBankPojo.setChoiceQuestion(answerAndChoice.get(2));
+            }
+            questionBankPojo.setCollegeId(articlePojo.getCollegeId());
+            questionBankPojo.setQbImg(articlePojo.getArticleImg());
+            questionBankPojo.setQbType(articlePojo.getArticleType());
+            questionBankPojo.setChoiceAnswer(articlePojo.getOptions());
+        }
+        questionBankPojo.setCreateTime(new Date());
+
+            saveTitleService.saveAnswer(questionBankPojo);
+        return R.ok("保存成功");
     }
 }
 

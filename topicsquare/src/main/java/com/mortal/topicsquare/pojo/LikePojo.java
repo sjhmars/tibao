@@ -10,7 +10,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName("like")
+@TableName("likemessage")
 public class LikePojo {
     @TableId(type = IdType.AUTO)
     private Integer likeId;

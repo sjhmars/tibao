@@ -3,6 +3,6 @@
 <mapper namespace="com.mortal.topicsquare.mapper.LikeMapper">
     <select id="getByLikeId" resultType="com.mortal.topicsquare.vo.LikeUserVo">
         SELECT like_id,user_id,article_id,createTime,user_name,user_type,user_img
-        FROM `like` LEFT JOIN `user` on `like`.user_id = `user`.id WHERE like_id = #{likeId}
+        FROM `likemessage` LEFT JOIN `user` on `like`.user_id = `user`.id WHERE like_id = #{likeId}
     </select>
 </mapper>

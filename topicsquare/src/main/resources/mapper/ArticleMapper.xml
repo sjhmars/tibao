@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mortal.topicsquare.mapper.ArticleMapper">
     <select id="selectAllArticle" resultType="com.mortal.topicsquare.vo.ArticleUserVo">
-SELECT article_id,article_content,article_img,`options`,user_id,user_name,user_type,user_img,sex,college_name,article_message.create_time
+SELECT article_id,article_content,article_img,`options`,user_id,user_name,user_type,user_img,sex,college_id,college_name,article_message.create_time
 FROM article_message
 LEFT JOIN `user` ON article_message.user_id = `user`.id
 LEFT JOIN college ON article_message.college_id = college.id
@@ -22,7 +22,7 @@ where
 ORDER BY article_message.create_time DESC
     </select>
     <select id="selectByArticleId" resultType="com.mortal.topicsquare.vo.ArticleUserVo">
-        SELECT article_id,article_content,,article_img,`options`,user_name,user_type,user_img,college_name,article_message.create_time
+        SELECT article_id,article_content,article_img,`options`,user_id,user_name,user_type,user_img,sex,college_id,college_name,article_message.create_time
         FROM article_message
         LEFT JOIN `user` ON article_message.user_id = `user`.id
         LEFT JOIN college ON article_message.college_id = college.id
@@ -34,20 +34,21 @@ ORDER BY article_message.create_time DESC
 	        like_id,
 	        a.user_id AS like_user,
 	        a.article_id,
-	        a.createTime AS lcreate,
+	        a.create_time AS lcreate,
 	        article_content,
 	        b.user_id AS article_user_id,
 	        b.article_img,
 	        b.college_id,
+					college.college_name,
 	        b.create_time AS acreate,
 	        user_name,
 	        user_type,
 	        sex,
 	        user_img
         FROM
-	        `like` AS a
+	        likemessage AS a
 	    LEFT JOIN article_message AS b ON a.article_id = b.article_id
-	    LEFT JOIN `user` AS c ON b.user_id = c.id
+	    LEFT JOIN `user` AS c ON b.user_id = c.id LEFT JOIN college on b.college_id = college.id
         WHERE
 	        a.user_id = #{userId}
         ORDER BY lcreate ASC

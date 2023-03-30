@@ -1,30 +1,30 @@
 package com.mortal.topicsquare.service.Imp;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mortal.common.utils.R;
 import com.mortal.topicsquare.mapper.CommentMapper;
-import com.mortal.topicsquare.pojo.ArticlePojo;
-import com.mortal.topicsquare.pojo.CommentPojo;
-import com.mortal.topicsquare.pojo.NoticePojo;
-import com.mortal.topicsquare.pojo.ReplayPojo;
-import com.mortal.topicsquare.service.ArticleService;
-import com.mortal.topicsquare.service.CommentService;
-import com.mortal.topicsquare.service.NoticeService;
-import com.mortal.topicsquare.service.ReplayService;
+import com.mortal.topicsquare.pojo.*;
+import com.mortal.topicsquare.service.*;
 import com.mortal.topicsquare.vo.ArticleUserVo;
 import com.mortal.topicsquare.vo.CommentUserVo;
 import com.mortal.topicsquare.vo.CommentVo;
+import com.mortal.topicsquare.vo.ReplayContentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentServiceImp extends ServiceImpl<CommentMapper, CommentPojo> implements CommentService {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private CommentMapper commentMapper;
@@ -43,7 +43,13 @@ public class CommentServiceImp extends ServiceImpl<CommentMapper, CommentPojo> i
         Page<CommentUserVo> page = new Page<>(commentVo.getPageNumber(),10);
         List<CommentUserVo> list =  commentMapper.selectComment(page,commentVo.getArticleId()).getRecords();
         for ( CommentUserVo commentUserVo : list) {
-            commentUserVo.setReplayContentVoList(replayService.getReplayContent(commentUserVo.getCommentId()));
+            List<ReplayContentVo> replayContentVos = replayService.getReplayContent(commentUserVo.getId());
+            replayContentVos = replayContentVos.stream().map(replayContentVo -> {
+                UserPojo user_name = userService.getOne(new LambdaUpdateWrapper<UserPojo>().eq(UserPojo::getId,replayContentVo.getReplayUserId()));
+                replayContentVo.setUserName(user_name.getUserName());
+                return replayContentVo;
+            }).collect(Collectors.toList());
+            commentUserVo.setReplayContentVoList(replayContentVos);
         }
 //        int number = list.size();
 //        for (int i = 0; i < number; i++) {
@@ -74,7 +80,7 @@ public class CommentServiceImp extends ServiceImpl<CommentMapper, CommentPojo> i
             noticeMessage.setNoticeType(3);
             noticeMessage.setArticleId(commentMessage.getArticleMessageId());
             noticeMessage.setCommentId(commentPojo.getId());
-
+            noticeMessage.setCreateTime(new Date());
             noticeService.save(noticeMessage);
         }
         return R.ok("发布成功");
@@ -87,6 +93,7 @@ public class CommentServiceImp extends ServiceImpl<CommentMapper, CommentPojo> i
 
         NoticePojo noticeMessage = new NoticePojo();
         noticeMessage.setReplayId(replayPojo.getReplayId());
+        noticeMessage.setCreateTime(new Date());
         noticeMessage.setNoticeType(4);
 
         CommentPojo commentPojo = this.getById(replayPojo.getCommentId());//获取回复的评论内容
@@ -97,6 +104,7 @@ public class CommentServiceImp extends ServiceImpl<CommentMapper, CommentPojo> i
             noticeService.save(noticeMessage);
         } else if (replayPojo.getReplayUserId() != null && !replayPojo.getReplayUserId().equals(userId)) {
             noticeMessage.setUserId(replayPojo.getReplayUserId());
+            noticeMessage.setReplayId(replayPojo.getUserId());
             noticeService.save(noticeMessage);
         }
         replayService.save(replayPojo);

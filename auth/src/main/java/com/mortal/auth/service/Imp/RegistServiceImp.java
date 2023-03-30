@@ -30,6 +30,7 @@ public class RegistServiceImp extends ServiceImpl<UserMapper, UserPojo> implemen
         userPojo.setUserType(userRegistVo.getUserType());
         userPojo.setJobNumber(userRegistVo.getJobNumber());
         userPojo.setCreateTime(new Date());
+        userPojo.setAnswerNumber(0);
         try {
             if (baseMapper.insert(userPojo)>0){
                 return userPojo.getId();

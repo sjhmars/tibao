@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.mortal.auth.pojo.LoginUser;
 import com.mortal.topicsquare.mapper.NoticeMapper;
 import com.mortal.topicsquare.pojo.LikePojo;
 import com.mortal.topicsquare.pojo.NoticePojo;
@@ -15,6 +16,8 @@ import com.mortal.topicsquare.service.ReplayService;
 import com.mortal.topicsquare.vo.NoticeVo;
 import com.mortal.topicsquare.vo.ReplayContentVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,10 +39,12 @@ public class NoticeServiceImp extends ServiceImpl<NoticeMapper, NoticePojo> impl
 
     @Override
     public IPage<NoticePojo> getAllNoticeById(NoticeVo noticeVo) {
-
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
+        Integer userId = loginUser.getUserPojo().getId();
         Page<NoticePojo> page = new Page<>(noticeVo.getPageNumber(),10);
 
-        IPage<NoticePojo> result = noticeMapper.selectPage(page,new LambdaQueryWrapper<NoticePojo>().eq(NoticePojo::getUserId,noticeVo.getUserId()));
+        IPage<NoticePojo> result = noticeMapper.selectAllByUserId(page,userId);
 
         List<NoticePojo> list = result.getRecords();
 

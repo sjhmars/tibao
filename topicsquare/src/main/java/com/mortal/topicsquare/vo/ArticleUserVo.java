@@ -15,7 +15,8 @@ public class ArticleUserVo {
     private String userName;
     private String userType;
     private String userImg;
-    private String Sex;
+    private Integer Sex;
+    private Integer collegeId;
     private String collegeName;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")

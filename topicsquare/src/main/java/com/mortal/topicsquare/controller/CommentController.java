@@ -33,25 +33,6 @@ public class CommentController {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
         Integer userId = loginUser.getUserPojo().getId();
-//        commentPojo.setUserId(userId);
-//        commentPojo.setArticleMessageId(commentMessage.getArticleMessageId());
-//        commentPojo.setComment(commentMessage.getComment());
-//        commentPojo.setIsDelete(0);
-//        commentPojo.setCreateTime(new Date());
-//        commentService.save(commentPojo);
-//
-//
-//        ArticlePojo newArticle = articleService.getById(commentMessage.getArticleMessageId());
-//
-//        if (!newArticle.getUserId().equals(userId)) {
-//            NoticePojo noticeMessage = new NoticePojo();
-//            noticeMessage.setUserId(newArticle.getUserId());
-//            noticeMessage.setNoticeType(3);
-//            noticeMessage.setArticleId(commentMessage.getArticleMessageId());
-//            noticeMessage.setCommentId(commentPojo.getId());
-//
-//            noticeService.save(noticeMessage);
-//        }
         return commentService.saveCommentAll(commentMessage,userId);
     }
 

@@ -17,6 +17,7 @@ public class LikeArticleVo {
     private Integer articleUserId;
     private String articleImg;
     private Integer collegeId;
+    private String collegeName;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date aCreate;

@@ -1,9 +1,12 @@
 package com.mortal.topicsquare.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.mortal.auth.pojo.LoginUser;
+import com.mortal.auth.pojo.UserPojo;
 import com.mortal.common.enums.CodeEnum;
 import com.mortal.common.utils.R;
+import com.mortal.topicsquare.feign.saveArticleService;
 import com.mortal.topicsquare.pojo.*;
 import com.mortal.topicsquare.service.ArticleService;
 import com.mortal.topicsquare.service.CommentService;
@@ -16,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -28,6 +32,9 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private saveArticleService artivleService;
 
     @Transactional
     @PostMapping("/saveArticle")
@@ -176,7 +183,7 @@ public class ArticleController {
     }
 
     @PostMapping("/getArticleByCollegeId")
-    public R getNewArticleByThemeId(@RequestBody ArticleVo articleVo) {
+    public R getArticleByCollegeId(@RequestBody ArticleVo articleVo) {
         return R.ok(articleService.getArticleByCollegeId(articleVo));
     }
 
@@ -186,5 +193,18 @@ public class ArticleController {
         LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
         Integer userId = loginUser.getUserPojo().getId();
         return R.ok(articleService.getAllLikeArticle(pageNumber,userId));
+    }
+
+    @PostMapping("/uploadArticleImg")
+    public R uploadArticleImg(@RequestParam("file") MultipartFile file){
+        String url = "http://my.xiangmu.com/tibao/";
+        String imageUrl  = artivleService.uploadImage(file);
+        return R.ok(url+imageUrl);
+    }
+
+    @Transactional
+    @PostMapping("/saveArticleAndQb")
+    public R saveArticleAndQb(@RequestBody ArticlePojo articlePojo){
+        return articleService.saveToqb(articlePojo);
     }
 }

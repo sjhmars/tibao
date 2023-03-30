@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.moratl.questionbank.mapper.AlreadyAnswerMapper">
+    <select id="selectAllByIsTrue" resultType="java.lang.Double">
+        SELECT COUNT(already_answer_id) as `right` FROM `already_answer` WHERE user_id = #{userId} and is_true = #{isTrue}
+    </select>
+    <select id="selectAllCount" resultType="java.lang.Double">
+        SELECT COUNT(already_answer_id) as `num` FROM `already_answer` WHERE user_id = #{userId}
+    </select>
+    <select id="selectNotDo" resultType="com.moratl.questionbank.vo.NotDoVo">
+        SELECT id,question_title,answer,topic_analysis,college_id,solverint_user,qb_type,choice_question,choice_answer,qb_img,question_bank.create_time,is_true,my_answer,user_id
+        FROM question_bank LEFT JOIN already_answer ON question_bank.id = already_answer.qb_id
+        WHERE question_bank.choice_answer &lt;&gt; ""  and (already_answer.user_id &lt;&gt; #{userId} or already_answer.user_id is null)
+    </select>
+    <select id="selectDoRight" resultType="com.moratl.questionbank.vo.NotDoVo">
+        SELECT id,question_title,answer,topic_analysis,college_id,solverint_user,qb_type,choice_question,choice_answer,qb_img,question_bank.create_time,is_true,my_answer,user_id
+        FROM question_bank LEFT JOIN already_answer ON question_bank.id = already_answer.qb_id
+        WHERE already_answer.user_id = #{userId} AND already_answer.is_true = 1
+    </select>
+    <select id="selectDoWrong" resultType="com.moratl.questionbank.vo.NotDoVo">
+        SELECT id,question_title,answer,topic_analysis,college_id,solverint_user,qb_type,choice_question,choice_answer,qb_img,question_bank.create_time,is_true,my_answer,user_id
+        FROM question_bank LEFT JOIN already_answer ON question_bank.id = already_answer.qb_id
+        WHERE already_answer.user_id = #{userId} AND already_answer.is_true = 0
+    </select>
+</mapper>

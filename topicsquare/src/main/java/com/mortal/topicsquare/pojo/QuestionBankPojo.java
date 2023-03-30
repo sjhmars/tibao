@@ -1,4 +1,4 @@
-package com.moratl.questionbank.pojo;
+package com.mortal.topicsquare.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
