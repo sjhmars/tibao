@@ -68,7 +68,7 @@ public class QuestionBankServiceImp extends ServiceImpl<QuestionBankMapper, Ques
     @Override
     public R getAnswerNull(QuestionDto questionDto) {
         Page<QuestionBankPojo> page = new Page<>(questionDto.getPageNumber(),1);
-        IPage<QuestionBankPojo> iPage = questionBankMapper.selectPage(page,new LambdaQueryWrapper<QuestionBankPojo>().eq(QuestionBankPojo::getAnswer,"").eq(QuestionBankPojo::getChoiceAnswer,""));
+        IPage<QuestionBankPojo> iPage = questionBankMapper.selectNoAnswer(page);
         IPage<QuestionBankVo> questionBankVoIPage = PageUtil.change(iPage.getRecords(),iPage);
         return R.ok(questionBankVoIPage);
     }
@@ -98,6 +98,14 @@ public class QuestionBankServiceImp extends ServiceImpl<QuestionBankMapper, Ques
     public R getAnswerByType(QuestionDto questionDto) {
         Page<QuestionBankPojo> page = new Page<>(questionDto.getPageNumber(),1);
         IPage<QuestionBankPojo> iPage = questionBankMapper.selectPage(page,new LambdaQueryWrapper<QuestionBankPojo>().eq(QuestionBankPojo::getQbType,questionDto.getQbType()).and(qw ->qw.ne(QuestionBankPojo::getAnswer,"").or().ne(QuestionBankPojo::getChoiceAnswer,"")));
+        IPage<QuestionBankVo> questionBankVoIPage = PageUtil.change(iPage.getRecords(),iPage);
+        return R.ok(questionBankVoIPage);
+    }
+
+    @Override
+    public R getBigAnswer(QuestionDto questionDto) {
+        Page<QuestionBankPojo> page = new Page<>(questionDto.getPageNumber(),1);
+        IPage<QuestionBankPojo> iPage = questionBankMapper.selectPage(page,new LambdaQueryWrapper<QuestionBankPojo>().eq(QuestionBankPojo::getQbType,0));
         IPage<QuestionBankVo> questionBankVoIPage = PageUtil.change(iPage.getRecords(),iPage);
         return R.ok(questionBankVoIPage);
     }

@@ -52,10 +52,14 @@ public class UserAnswerServiceImp extends ServiceImpl<AlreadyAnswerMapper, Alrea
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
         Integer userId = loginUser.getUserPojo().getId();
+        String userType = loginUser.getUserPojo().getUserType();
+        String userName = loginUser.getUserPojo().getUserName();
         try {
             QuestionBankPojo questionBankPojo =  questionBankMapper.selectById(operateDto.getQbId());
             questionBankPojo.setTopicAnalysis(operateDto.getTopicAnalysis());
             questionBankPojo.setSolverintUser(userId);
+            questionBankPojo.setUserType(userType);
+            questionBankPojo.setUserName(userName);
             questionBankMapper.updateById(questionBankPojo);
 
             UserPojo userPojo = userMapper.selectById(userId);
@@ -113,7 +117,8 @@ public class UserAnswerServiceImp extends ServiceImpl<AlreadyAnswerMapper, Alrea
         if (AllNum!=0){
             accuracy  = right/AllNum;
         }
-        DecimalFormat df = new DecimalFormat("#.00");
+        accuracy = accuracy*100;
+        DecimalFormat df = new DecimalFormat("#00.00");
         return R.ok(df.format(accuracy));
     }
 
@@ -159,8 +164,7 @@ public class UserAnswerServiceImp extends ServiceImpl<AlreadyAnswerMapper, Alrea
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
         Integer userId = loginUser.getUserPojo().getId();
-        Double right = alreadyAnswerMapper.selectAllByIsTrue(userId,1);
-        DecimalFormat df = new DecimalFormat("#.00");
-        return R.ok(df.format(right));
+        Double AllNum = alreadyAnswerMapper.selectAllCount(userId);
+        return R.ok(AllNum);
     }
 }

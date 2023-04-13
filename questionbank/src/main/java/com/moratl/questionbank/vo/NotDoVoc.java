@@ -22,6 +22,8 @@ public class NotDoVoc {
     private List<String> choiceAnswer;
     private String qbImg;
     private Date createTime;
+    private String userType;
+    private String userName;
     private Integer isTrue;
     private List<String> myAnswer;
     private Integer userId;

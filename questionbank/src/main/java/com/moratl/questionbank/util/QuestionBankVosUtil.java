@@ -19,7 +19,7 @@ public class QuestionBankVosUtil {
             if (StrUtil.isNotBlank(questionBankPojo.getChoiceAnswer())){
                 choiceAnswers = Convert.toList(String.class,questionBankPojo.getChoiceAnswer());
             }
-            QuestionBankVo questionBankVo = new QuestionBankVo(questionBankPojo.getId(),questionBankPojo.getQuestionTitle(),questionBankPojo.getAnswer(),questionBankPojo.getTopicAnalysis(),questionBankPojo.getCollegeId(),questionBankPojo.getSolverintUser(),questionBankPojo.getQbType(),choiceQuestions,choiceAnswers,questionBankPojo.getQbImg());
+            QuestionBankVo questionBankVo = new QuestionBankVo(questionBankPojo.getId(),questionBankPojo.getQuestionTitle(),questionBankPojo.getAnswer(),questionBankPojo.getTopicAnalysis(),questionBankPojo.getCollegeId(),questionBankPojo.getSolverintUser(),questionBankPojo.getQbType(),choiceQuestions,choiceAnswers,questionBankPojo.getQbImg(),questionBankPojo.getUserType(),questionBankPojo.getUserName());
             return questionBankVo;
         }).collect(Collectors.toList());
         return questionBankVos;

@@ -75,6 +75,6 @@ public class UserAnswerController {
 
     @PostMapping("allAnsweNum")
     public R allAnsweNum(){
-        return R.ok(userAnswerService.allansweNum());
+        return userAnswerService.allansweNum();
     }
 }

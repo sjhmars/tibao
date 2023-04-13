@@ -44,4 +44,8 @@ public class QuestionBankVo {
 
 
     private String qbImg;
+
+    private String userType;
+
+    private String userName;
 }

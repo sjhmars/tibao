@@ -4,4 +4,7 @@
     <select id="searchAll" resultType="com.moratl.questionbank.pojo.QuestionBankPojo">
         SELECT * FROM question_bank
     </select>
+    <select id="selectNoAnswer" resultType="com.moratl.questionbank.pojo.QuestionBankPojo">
+        SELECT * FROM question_bank WHERE (answer = "" OR ISNULL(answer)) AND (choice_answer = "" OR ISNULL(choice_answer))
+    </select>
 </mapper>

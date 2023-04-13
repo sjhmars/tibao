@@ -31,6 +31,11 @@ public class AnswerController {
         return questionBankService.getAnswerByTitle(questionDto);
     }
 
+    @PostMapping("/getBigAnswer")
+    public R getBigAnswer(@RequestBody QuestionDto questionDto){
+        return questionBankService.getBigAnswer(questionDto);
+    }
+
     @PostMapping("/getAnswerNull")
     public R getAnswerNull(@RequestBody QuestionDto questionDto){
         return questionBankService.getAnswerNull(questionDto);

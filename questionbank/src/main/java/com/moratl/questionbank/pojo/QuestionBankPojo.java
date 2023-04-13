@@ -44,4 +44,10 @@ public class QuestionBankPojo {
 
     @TableField(value = "create_time")
     private Date createTime;
+
+    @TableField(value = "user_type")
+    private String userType;
+
+    @TableField(value = "user_name")
+    private String userName;
 }

@@ -22,6 +22,8 @@ public class NotDoVo {
     private String choiceAnswer;
     private String qbImg;
     private Date createTime;
+    private String userType;
+    private String userName;
     private Integer isTrue;
     private String myAnswer;
     private Integer userId;

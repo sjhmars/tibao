@@ -22,9 +22,9 @@ public class NoPageUtil {
             }
             List<String> MyAnswers = null;
             if (StrUtil.isNotBlank(notDoVo.getMyAnswer())){
-                MyAnswers = Convert.toList(String.class,notDoVo.getAnswer());
+                MyAnswers = Convert.toList(String.class,notDoVo.getMyAnswer());
             }
-            return new NotDoVoc(notDoVo.getId(),notDoVo.getQuestionTitle(),notDoVo.getAnswer(),notDoVo.getTopicAnalysis(),notDoVo.getCollegeId(),notDoVo.getSolverintUser(),notDoVo.getQbType(),choiceQuestions,choiceAnswers,notDoVo.getQbImg(),notDoVo.getCreateTime(),notDoVo.getIsTrue(),MyAnswers,notDoVo.getUserId());
+            return new NotDoVoc(notDoVo.getId(),notDoVo.getQuestionTitle(),notDoVo.getAnswer(),notDoVo.getTopicAnalysis(),notDoVo.getCollegeId(),notDoVo.getSolverintUser(),notDoVo.getQbType(),choiceQuestions,choiceAnswers,notDoVo.getQbImg(),notDoVo.getCreateTime(),notDoVo.getUserType(),notDoVo.getUserName(),notDoVo.getIsTrue(),MyAnswers,notDoVo.getUserId());
         }).collect(Collectors.toList());
         IPage<NotDoVoc> notDoVocIPage = new Page<>();
         notDoVocIPage.setCurrent(iPage.getCurrent())
