@@ -8,9 +8,12 @@ import com.mortal.topicsquare.vo.LikeArticleVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface ArticleMapper extends BaseMapper<ArticlePojo> {
     IPage<ArticleUserVo> selectAllArticle(IPage<ArticleUserVo> page, @Param("articleId") Integer articleId,@Param("collegeId") Integer collegeId,@Param("userId") Integer userId);
     ArticleUserVo selectByArticleId(@Param("articleId") Integer articleId);
     IPage<LikeArticleVo> selectByArticleIdLikeArticleVo(IPage<LikeArticleVo> page,@Param("userId")Integer userId);
+    IPage<ArticleUserVo> selectAllByUserIds(IPage<ArticleUserVo>page, @Param("userIds") List<Integer> userIds);
 }

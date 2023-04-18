@@ -1,5 +1,6 @@
 package com.moratl.questionbank.services.Imp;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -88,7 +89,12 @@ public class QuestionBankServiceImp extends ServiceImpl<QuestionBankMapper, Ques
             questionBankMapper.update(questionBankPojo,new LambdaUpdateWrapper<QuestionBankPojo>().eq(QuestionBankPojo::getId,questionDto.getQuestionId()));
         }
         if (questionBankPojo.getQbType() == 0){
-            questionBankPojo.setAnswer(questionDto.getAnswer());
+            String answer = null;
+            if (StrUtil.isNotBlank(questionDto.getAnswer())){
+                answer = questionDto.getAnswer().substring(1);
+                answer = answer.substring(0,answer.length()-1);
+            }
+            questionBankPojo.setAnswer(answer);
             questionBankMapper.update(questionBankPojo,new LambdaUpdateWrapper<QuestionBankPojo>().eq(QuestionBankPojo::getId,questionDto.getQuestionId()));
         }
         return R.ok("更新成功");
@@ -106,6 +112,14 @@ public class QuestionBankServiceImp extends ServiceImpl<QuestionBankMapper, Ques
     public R getBigAnswer(QuestionDto questionDto) {
         Page<QuestionBankPojo> page = new Page<>(questionDto.getPageNumber(),1);
         IPage<QuestionBankPojo> iPage = questionBankMapper.selectPage(page,new LambdaQueryWrapper<QuestionBankPojo>().eq(QuestionBankPojo::getQbType,0));
+        IPage<QuestionBankVo> questionBankVoIPage = PageUtil.change(iPage.getRecords(),iPage);
+        return R.ok(questionBankVoIPage);
+    }
+
+    @Override
+    public R getAnswerByCollegeId(QuestionDto questionDto) {
+        Page<QuestionBankPojo> page = new Page<>(questionDto.getPageNumber(),1);
+        IPage<QuestionBankPojo> iPage = questionBankMapper.selectPage(page,new LambdaQueryWrapper<QuestionBankPojo>().eq(QuestionBankPojo::getCollegeId,questionDto.getCollegeId()).and(qw ->qw.ne(QuestionBankPojo::getAnswer,"").or().ne(QuestionBankPojo::getChoiceAnswer,"")));
         IPage<QuestionBankVo> questionBankVoIPage = PageUtil.change(iPage.getRecords(),iPage);
         return R.ok(questionBankVoIPage);
     }

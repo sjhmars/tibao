@@ -21,12 +21,7 @@ public class PageUtil {
             if (StrUtil.isNotBlank(questionBankPojo.getChoiceAnswer())){
                 choiceAnswers = Convert.toList(String.class,questionBankPojo.getChoiceAnswer());
             }
-            String answer = null;
-            if (StrUtil.isNotBlank(questionBankPojo.getAnswer())){
-                answer = questionBankPojo.getAnswer().substring(1);
-                answer = answer.substring(0,answer.length()-1);
-            }
-            QuestionBankVo questionBankVo = new QuestionBankVo(questionBankPojo.getId(),questionBankPojo.getQuestionTitle(),answer,questionBankPojo.getTopicAnalysis(),questionBankPojo.getCollegeId(),questionBankPojo.getSolverintUser(),questionBankPojo.getQbType(),choiceQuestions,choiceAnswers,questionBankPojo.getQbImg(),questionBankPojo.getUserType(),questionBankPojo.getUserName());
+            QuestionBankVo questionBankVo = new QuestionBankVo(questionBankPojo.getId(),questionBankPojo.getQuestionTitle(),questionBankPojo.getAnswer(),questionBankPojo.getTopicAnalysis(),questionBankPojo.getCollegeId(),questionBankPojo.getSolverintUser(),questionBankPojo.getQbType(),choiceQuestions,choiceAnswers,questionBankPojo.getQbImg(),questionBankPojo.getUserType(),questionBankPojo.getUserName());
             return questionBankVo;
         }).collect(Collectors.toList());
         IPage<QuestionBankVo> questionBankVoIPage = new Page<>();

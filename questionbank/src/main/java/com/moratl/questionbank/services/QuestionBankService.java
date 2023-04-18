@@ -13,4 +13,5 @@ public interface QuestionBankService extends IService<QuestionBankPojo> {
     R updateAnswerById(QuestionDto questionDto);
     R getAnswerByType(QuestionDto questionDto);
     R getBigAnswer(QuestionDto questionDto);
+    R getAnswerByCollegeId(QuestionDto questionDto);
 }

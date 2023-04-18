@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleServiceImp extends ServiceImpl<ArticleMapper, ArticlePojo> implements ArticleService {
@@ -47,6 +48,9 @@ public class ArticleServiceImp extends ServiceImpl<ArticleMapper, ArticlePojo> i
 
     @Autowired
     private SaveTitleService saveTitleService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public R deleteArticle(ArticlePojo articlePojo,Integer userId) {
@@ -155,12 +159,18 @@ public class ArticleServiceImp extends ServiceImpl<ArticleMapper, ArticlePojo> i
         this.save(articlePojo);
         QuestionBankPojo questionBankPojo = new QuestionBankPojo();
         if (articlePojo.getArticleType() == 0){
-            questionBankPojo.setAnswer(articlePojo.getOptions());
+            String answer = null;
+            if (StrUtil.isNotBlank(articlePojo.getOptions())){
+                answer = articlePojo.getOptions().substring(1);
+                answer = answer.substring(0,answer.length()-1);
+            }
+            questionBankPojo.setAnswer(answer);
             questionBankPojo.setCollegeId(articlePojo.getCollegeId());
             if (StrUtil.isNotBlank(articlePojo.getArticleImg()))
                 questionBankPojo.setQbImg(articlePojo.getArticleImg());
             questionBankPojo.setQbType(articlePojo.getArticleType());
-            questionBankPojo.setQuestionTitle(articlePojo.getArticleContent());
+            List<String> answerAndChoice = Arrays.asList(articlePojo.getArticleContent().split("#"));
+            questionBankPojo.setQuestionTitle(answerAndChoice.get(1));
         }
         if (articlePojo.getArticleType() == 1){
             if (StrUtil.isNotBlank(articlePojo.getArticleContent())){
@@ -177,6 +187,14 @@ public class ArticleServiceImp extends ServiceImpl<ArticleMapper, ArticlePojo> i
 
             saveTitleService.saveAnswer(questionBankPojo);
         return R.ok("保存成功");
+    }
+
+    @Override
+    public IPage<ArticleUserVo> getArticleByName(ArticleVo articleVo) {
+        List<UserPojo> userPojoList = userService.list(new LambdaQueryWrapper<UserPojo>().like(UserPojo::getUserName,articleVo.getUserName()));
+        List<Integer> ids = userPojoList.stream().map(UserPojo::getId).collect(Collectors.toList());
+        Page<ArticleUserVo> page = new Page<>(articleVo.getPageNumber(),10);
+        return articleMapper.selectAllByUserIds(page,ids);
     }
 }
 

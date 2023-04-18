@@ -19,4 +19,11 @@ public class CollegeServiceImp extends ServiceImpl<CollegeMapper, CollegePojo> i
     public List<CollegePojo> getAllCollege() {
         return collegeMapper.searchAll();
     }
+
+    @Override
+    public boolean click(CollegePojo collegePojo) {
+        CollegePojo collegePojo1 = collegeMapper.selectById(collegePojo.getId());
+        collegePojo1.setClickNum(collegePojo1.getClickNum()+1);
+        return collegeMapper.updateById(collegePojo1) > 0;
+    }
 }

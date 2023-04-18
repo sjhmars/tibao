@@ -9,4 +9,5 @@ public class QuestionDto {
     private Integer questionId;
     private Integer qbType;
     private String answer;
+    private Integer collegeId;
 }

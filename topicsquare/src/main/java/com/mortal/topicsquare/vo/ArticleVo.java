@@ -8,4 +8,5 @@ public class ArticleVo {
     private Integer articleId;
     private Integer collegeId;
     private Integer userId;
+    private String userName;
 }

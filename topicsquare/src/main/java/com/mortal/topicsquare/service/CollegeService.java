@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CollegeService extends IService<CollegePojo> {
     List<CollegePojo> getAllCollege();
+    boolean click(CollegePojo collegePojo);
 }

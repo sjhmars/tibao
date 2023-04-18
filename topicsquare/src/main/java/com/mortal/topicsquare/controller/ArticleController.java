@@ -130,45 +130,6 @@ public class ArticleController {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
         Integer userId = loginUser.getUserPojo().getId();
-//        List<LikePojo> list = likeArticleService.findList(likeMessage);
-//        if (list.size() == 0) {
-//            likeArticleService.add(likeMessage);
-//
-//            LikeMessage likeMessage1 = likeArticleService.findList(likeMessage).get(0);
-//
-//            ArticleMessage newArticleById = articleOperationService.getNewArticleById(articleId);
-//
-//            NoticeMessage noticeMessage = new NoticeMessage();
-//
-//            noticeMessage.setArticleId(articleId);
-//
-//            noticeMessage.setNoticeType(2);
-//            noticeMessage.setUserId(newArticleById.getUserId());
-//            noticeMessage.setLikeId(likeMessage1.getLikeId());
-//
-//            List<NoticeMessage> noticeMessages = noticeOperationService.findList(noticeMessage);
-//
-//            if (noticeMessages.size() == 0 && !newArticleById.getUserId().equals(userId)) {
-//
-//                noticeMessage.setLikeId(likeMessage1.getLikeId());
-//                noticeOperationService.add(noticeMessage);
-//            }
-//        } else {
-//            ArticleMessage newArticleById = articleOperationService.getNewArticleById(articleId);
-//
-//            NoticeMessage noticeMessage = new NoticeMessage();
-//
-//            noticeMessage.setArticleId(articleId);
-//
-//            noticeMessage.setNoticeType(2);
-//            noticeMessage.setUserId(newArticleById.getUserId());
-//            noticeMessage.setLikeId(list.get(0).getLikeId());
-//
-//            likeArticleService.delete(likeMessage);
-//            noticeOperationService.delete(noticeMessage);
-//        }
-//
-//        return ResponseData.success();
         return articleService.likeArticle(articlePojo,userId);
     }
 
@@ -206,5 +167,10 @@ public class ArticleController {
     @PostMapping("/saveArticleAndQb")
     public R saveArticleAndQb(@RequestBody ArticlePojo articlePojo){
         return articleService.saveToqb(articlePojo);
+    }
+
+    @PostMapping("/getArticleByName")
+    public R getArticleByName(@RequestBody ArticleVo articleVo) {
+        return R.ok(articleService.getArticleByName(articleVo));
     }
 }

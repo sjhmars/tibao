@@ -52,17 +52,15 @@ public class UserAnswerServiceImp extends ServiceImpl<AlreadyAnswerMapper, Alrea
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
         Integer userId = loginUser.getUserPojo().getId();
-        String userType = loginUser.getUserPojo().getUserType();
-        String userName = loginUser.getUserPojo().getUserName();
+        UserPojo userPojo = userMapper.selectById(userId);
         try {
             QuestionBankPojo questionBankPojo =  questionBankMapper.selectById(operateDto.getQbId());
             questionBankPojo.setTopicAnalysis(operateDto.getTopicAnalysis());
             questionBankPojo.setSolverintUser(userId);
-            questionBankPojo.setUserType(userType);
-            questionBankPojo.setUserName(userName);
+            questionBankPojo.setUserType(userPojo.getUserType());
+            questionBankPojo.setUserName(userPojo.getUserName());
             questionBankMapper.updateById(questionBankPojo);
 
-            UserPojo userPojo = userMapper.selectById(userId);
             Integer answerNumber = userPojo.getAnswerNumber();
             answerNumber = answerNumber+1;
             userPojo.setAnswerNumber(answerNumber);

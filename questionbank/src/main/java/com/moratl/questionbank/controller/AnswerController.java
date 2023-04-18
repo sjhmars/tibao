@@ -60,4 +60,9 @@ public class AnswerController {
     public R getAnswerByType(@RequestBody QuestionDto questionDto){
         return questionBankService.getAnswerByType(questionDto);
     }
+
+    @PostMapping("/getAnswerByCollegeId")
+    public R getAnswerByCollegeId(@RequestBody QuestionDto questionDto){
+        return questionBankService.getAnswerByCollegeId(questionDto);
+    }
 }

@@ -21,4 +21,5 @@ public interface ArticleService extends IService<ArticlePojo> {
     IPage<ArticleUserVo> getArticleByCollegeId(ArticleVo articleVo);
     IPage<LikeArticleVo> getAllLikeArticle(Integer pageNumber,Integer userId);
     R saveToqb(ArticlePojo articlePojo);
+    IPage<ArticleUserVo> getArticleByName(ArticleVo articleVo);
 }

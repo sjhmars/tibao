@@ -42,38 +42,13 @@ public class CommentController {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) usernamePasswordAuthenticationToken.getPrincipal();
         Integer Id = loginUser.getUserPojo().getId();//当前登录用户id
-//        replayMessage.setUserId(Id);
-//        replayMessage.setCreateTime(new Date());
-//
-//        NoticePojo noticeMessage = new NoticePojo();
-//        noticeMessage.setReplayId(replayMessage.getReplayId());
-//        noticeMessage.setNoticeType(4);
-//
-//        CommentPojo commentPojo = commentService.getById(replayMessage.getCommentId());//获取回复的评论内容
-//        noticeMessage.setArticleId(commentPojo.getArticleMessageId());//关联文章
-//        if (replayMessage.getReplayUserId() == null && commentPojo.getUserId().equals(Id)) {
-//            noticeMessage.setUserId(commentPojo.getUserId());
-//            replayMessage.setReplayUserId(commentPojo.getUserId());
-//            noticeService.save(noticeMessage);
-//        } else if (replayMessage.getReplayUserId() != null && !replayMessage.getReplayUserId().equals(Id)) {
-//            noticeMessage.setUserId(replayMessage.getReplayUserId());
-//            noticeService.save(noticeMessage);
-//        }
-//        replayService.save(replayMessage);
+
         return commentService.saveReplayAll(replayMessage,Id);
     }
 
     @PostMapping("/getCommentById")
     public R getCommentById(@RequestBody CommentVo commentVo) {
-//        for ( CommentUserVo commentUserVo : list) {
-//            commentUserVo.setReplayPojoList();
-//        }
-//        int number = list.size();
-//        for (int i = 0; i < number; i++) {
-//            list.get(i).setReplayPojoList(replayMessageOperationService.getReplayContent(list.get(i).getCommentId()));
-//        }
-//
-//        PageInfo<CommentMessage> of = PageInfo.of(list);
+
         return R.ok(commentService.getCommentByArticleId(commentVo));
     }
 

@@ -53,4 +53,14 @@ ORDER BY article_message.create_time DESC
 	        a.user_id = #{userId}
         ORDER BY lcreate ASC
     </select>
+    <select id="selectAllByUserIds" resultType="com.mortal.topicsquare.vo.ArticleUserVo">
+        SELECT article_id,article_content,article_img,`options`,user_id,user_name,user_type,user_img,sex,college_id,college_name,article_message.create_time
+        FROM article_message
+        LEFT JOIN `user` ON article_message.user_id = `user`.id
+        LEFT JOIN college ON article_message.college_id = college.id
+        where `user`.id in 
+        <foreach collection="userIds" item="Id" open="(" close=")" separator=",">
+            #{Id}
+        </foreach>
+    </select>
 </mapper>

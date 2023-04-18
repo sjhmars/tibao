@@ -23,4 +23,7 @@ public class CollegePojo {
     @TableField(value = "college_image")
     private String collegeImage;
 
+    @TableField(value = "click_num")
+    private Integer clickNum;
+
 }
